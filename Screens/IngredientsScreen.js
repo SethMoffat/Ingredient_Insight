@@ -1,17 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Text, View, StyleSheet } from 'react-native';
 import seedOils from '../constants/seedOils';
-import unhealthySweeteners from '../constants/unhealthySweeteners';
+import { unhealthySweeteners, isUnhealthySweetener } from '../constants/unhealthySweeteners';
+
+
+
+
+const normalizeString = str => str.toLowerCase().replace(/[^a-z0-9]/g, ' ').replace(/\s+/g, ' ').trim();
 
 const IngredientsScreen = ({ route, navigation }) => {
   const { ingredients } = route.params;
   const [healthConcerns, setHealthConcerns] = useState([]);
 
   useEffect(() => {
-    if (!Array.isArray(ingredients)) return;
-    
-    const foundSeedOils = seedOils.filter((oil) => ingredients.includes(oil));
-    const foundSweeteners = unhealthySweeteners.filter((sweetener) => ingredients.includes(sweetener));
+    if (typeof ingredients !== 'string') return;
+
+    const ingredientsArray = ingredients.split(',').map(normalizeString);
+
+    const foundSeedOils = seedOils.map(normalizeString).filter((oil) => ingredientsArray.includes(oil));
+    const foundSweeteners = unhealthySweeteners.map(normalizeString).filter((sweetener) => ingredientsArray.includes(sweetener));
+
     setHealthConcerns([...foundSeedOils, ...foundSweeteners]);
   }, [ingredients]);
 
@@ -38,7 +46,6 @@ const IngredientsScreen = ({ route, navigation }) => {
   );
 };
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -55,7 +62,7 @@ const styles = StyleSheet.create({
   ingredientsText: {
     fontSize: 18,
     marginBottom: 20,
-    fontFamily: 'Cochin',
+    // fontFamily: 'Cochin',
   },
   infoBox: {
     width: '100%',
