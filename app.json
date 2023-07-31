@@ -15,9 +15,11 @@
       "**/*"
     ],
     "ios": {
+      "bundleIdentifier": "com.Tallhaven.SnackScan",
       "supportsTablet": true
     },
     "android": {
+      "package": "com.Tallhaven.SnackScan",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -25,6 +27,11 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "3d6daa7c-2908-4131-8e30-02f1bf6a8d2b"
+      }
     }
   }
 }
