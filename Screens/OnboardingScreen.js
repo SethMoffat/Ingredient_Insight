@@ -7,7 +7,7 @@ const OnboardingScreen = ({ navigation }) => {
   const [visibleAllergies, setVisibleAllergies] = useState(false);
 
   const handleContinue = () => {
-    navigation.navigate('Home', { allergies });
+    navigation.navigate('Scanner', { allergies });
   };
 
   return (
