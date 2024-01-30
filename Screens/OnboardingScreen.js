@@ -1,48 +1,32 @@
 import React, { useState } from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
-import { Menu, Provider } from 'react-native-paper';
+import { View, StyleSheet, Text } from 'react-native';
+import { Button, Menu, Provider, Title, Surface } from 'react-native-paper';
 
 const OnboardingScreen = ({ navigation }) => {
   const [allergies, setAllergies] = useState('');
-  const [healthConcerns, setHealthConcerns] = useState('');
   const [visibleAllergies, setVisibleAllergies] = useState(false);
-  const [visibleHealthConcerns, setVisibleHealthConcerns] = useState(false);
 
   const handleContinue = () => {
-    navigation.navigate('Home', { allergies, healthConcerns });
+    navigation.navigate('Home', { allergies });
   };
 
   return (
     <Provider>
       <View style={styles.container}>
-        <Text style={styles.title}>Let's get started!</Text>
-        <View style={styles.dropdownContainer}>
-          <Text style={styles.label}>Select your allergies:</Text>
+        <Surface style={styles.surface}>
+          <Title style={styles.title}>Let's get started!</Title>
+          <Text style={styles.paragraph}>Select your allergies:</Text>
           <Menu
             visible={visibleAllergies}
             onDismiss={() => setVisibleAllergies(false)}
-            anchor={<Button title={allergies || "Select Allergies"} onPress={() => setVisibleAllergies(true)} />}
+            anchor={<Button mode="outlined" onPress={() => setVisibleAllergies(true)}>{allergies || "Select Allergies"}</Button>}
           >
             <Menu.Item onPress={() => {setAllergies('None'); setVisibleAllergies(false);}} title="None" />
             <Menu.Item onPress={() => {setAllergies('Peanuts'); setVisibleAllergies(false);}} title="Peanuts" />
-            <Menu.Item onPress={() => {setAllergies('Tree nuts'); setVisibleAllergies(false);}} title="Tree nuts" />
-            <Menu.Item onPress={() => {setAllergies('Milk'); setVisibleAllergies(false);}} title="Milk" />
+            {/* Add more Menu.Item components for other allergies */}
           </Menu>
-        </View>
-        <View style={styles.dropdownContainer}>
-          <Text style={styles.label}>Select your health concerns:</Text>
-          <Menu
-            visible={visibleHealthConcerns}
-            onDismiss={() => setVisibleHealthConcerns(false)}
-            anchor={<Button title={healthConcerns || "Select Health Concerns"} onPress={() => setVisibleHealthConcerns(true)} />}
-          >
-            <Menu.Item onPress={() => {setHealthConcerns('None'); setVisibleHealthConcerns(false);}} title="None" />
-            <Menu.Item onPress={() => {setHealthConcerns('Diabetes'); setVisibleHealthConcerns(false);}} title="Diabetes" />
-            <Menu.Item onPress={() => {setHealthConcerns('High blood pressure'); setVisibleHealthConcerns(false);}} title="High blood pressure" />
-            <Menu.Item onPress={() => {setHealthConcerns('Heart disease'); setVisibleHealthConcerns(false);}} title="Heart disease" />
-          </Menu>
-        </View>
-        <Button title="Continue" onPress={handleContinue} />
+          <Button mode="contained" style={styles.button} onPress={handleContinue}>Continue</Button>
+        </Surface>
       </View>
     </Provider>
   );
@@ -51,26 +35,31 @@ const OnboardingScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    paddingTop: 50,
+    justifyContent: 'center',
+    padding: 16,
+    backgroundColor: '#F5F5F5',
+  },
+  surface: {
+    padding: 16,
+    elevation: 4,
+    backgroundColor: 'white',
+    borderRadius: 8,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 50,
+    marginBottom: 16,
+    textAlign: 'center', // Add this line
   },
-  label: {
+  paragraph: {
+    marginBottom: 8,
     fontSize: 18,
-    marginBottom: 10,
+    fontWeight: 'bold',
+    color: '#333',
+    textAlign: 'center', // Add this line
   },
-  dropdownContainer: {
-    borderWidth: 1,
-    borderColor: '#000',
-    borderRadius: 4,
-    marginBottom: 20,
-    width: '80%',
-    padding: 10,
+  button: {
+    marginTop: 16,
   },
 });
 

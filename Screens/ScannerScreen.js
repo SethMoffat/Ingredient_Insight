@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Text, View } from 'react-native';
-import { StyleSheet } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
+import { Button, Provider, Title, Surface } from 'react-native-paper';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import axios from 'axios';
 
@@ -34,20 +34,41 @@ export default function ScannerScreen({ navigation }) {
   }
 
   return (
-    <View style={styles.container}>
-      <BarCodeScanner
-        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-        style={StyleSheet.absoluteFillObject}
-      />
-  
-      {scanned && <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />}
-    </View>
+    <Provider>
+      <View style={styles.container}>
+        <Surface style={styles.surface}>
+          <Title style={styles.title}>Scan a product</Title>
+          <BarCodeScanner
+            onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+            style={StyleSheet.absoluteFillObject}
+          />
+        </Surface>
+        {scanned && <Button mode="contained" onPress={() => setScanned(false)}>Tap to Scan</Button>}
+      </View>
+    </Provider>
   );
-}
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: 'flex-end',
-      backgroundColor: '#F5F5DC',
-    },
-  });
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    padding: 16,
+    backgroundColor: '#F5F5F5',
+  },
+  surface: {
+    padding: 32, // Increase padding
+    elevation: 4,
+    backgroundColor: 'white',
+    borderRadius: 8,
+    alignItems: 'center', // Center the children horizontally
+    margin: 16, // Add margin
+  },
+  title: {
+    fontSize: 28, // Increase font size
+    fontWeight: 'bold',
+    marginBottom: 16,
+    textAlign: 'center',
+    color: '#333', // Darker color for better visibility
+  },
+});

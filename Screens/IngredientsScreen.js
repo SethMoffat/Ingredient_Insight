@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Text, View, StyleSheet } from 'react-native';
+import { View, StyleSheet, ScrollView, LogBox } from 'react-native';
+import { Provider, Title, Surface, Paragraph, Button } from 'react-native-paper';
 import seedOils from '../constants/seedOils';
 import { unhealthySweeteners, isUnhealthySweetener } from '../constants/unhealthySweeteners';
-
-
-
 
 const normalizeString = str => str.toLowerCase().replace(/[^a-z0-9]/g, ' ').replace(/\s+/g, ' ').trim();
 
@@ -24,61 +22,55 @@ const IngredientsScreen = ({ route, navigation }) => {
   }, [ingredients]);
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.ingredientsTitle}>Ingredients:</Text>
-      <Text style={styles.ingredientsText}>{ingredients}</Text>
-      <View style={styles.infoBox}>
-        <Text style={styles.infoBoxTitle}>Allergies</Text>
-        <Text style={styles.infoBoxText}>Content Here</Text>
+    <Provider>
+      <View style={styles.container}>
+        <Surface style={styles.surface}>
+          <Title style={styles.title}>Ingredients</Title>
+          <ScrollView>
+            <Paragraph style={styles.paragraph}>{ingredients}</Paragraph>
+          </ScrollView>
+          <Title style={styles.title}>Health Concerns</Title>
+          <ScrollView>
+            {healthConcerns.length > 0 ? (
+              healthConcerns.map((concern, index) => (
+                <Paragraph key={index} style={styles.paragraph}>{concern}</Paragraph>
+              ))
+            ) : (
+              <Paragraph style={styles.paragraph}>No Health Concerns Detected</Paragraph>
+            )}
+          </ScrollView>
+          <Button mode="contained" onPress={() => navigation.navigate('Scanner')}>Scan Again</Button>
+        </Surface>
       </View>
-      <View style={styles.infoBox}>
-        <Text style={styles.infoBoxTitle}>Health Concerns</Text>
-        {healthConcerns.length > 0 ? (
-          healthConcerns.map((concern, index) => (
-            <Text key={index} style={styles.infoBoxText}>{concern}</Text>
-          ))
-        ) : (
-          <Text style={styles.infoBoxText}>No Health Concerns Detected</Text>
-        )}
-      </View>
-      <Button title="Scan Again" onPress={() => navigation.navigate('Scanner')} />
-    </View>
+    </Provider>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#F5F5DC',
-    padding: 20,
+    padding: 16,
+    backgroundColor: '#F5F5F5',
   },
-  ingredientsTitle: {
-    fontSize: 24,
-    marginBottom: 10,
-    fontFamily: 'Cochin',
+  surface: {
+    padding: 32, // Increase padding
+    elevation: 4,
+    backgroundColor: 'white',
+    borderRadius: 8,
+    margin: 16, // Add margin
   },
-  ingredientsText: {
-    fontSize: 18,
-    marginBottom: 20,
-    // fontFamily: 'Cochin',
+  title: {
+    fontSize: 28, // Increase font size
+    fontWeight: 'bold',
+    marginBottom: 16,
+    textAlign: 'center',
+    color: '#333', // Darker color for better visibility
   },
-  infoBox: {
-    width: '100%',
-    borderWidth: 1,
-    borderColor: '#000',
-    padding: 10,
-    marginBottom: 20,
-  },
-  infoBoxTitle: {
-    fontSize: 20,
-    fontFamily: 'Cochin',
-    marginBottom: 10,
-  },
-  infoBoxText: {
-    fontSize: 16,
-    fontFamily: 'Cochin',
+  paragraph: {
+    fontSize: 18, // Increase font size
+    color: '#333', // Darker color for better visibility
+    marginBottom: 16, // Add margin bottom
   },
 });
 
