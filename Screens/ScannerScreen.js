@@ -39,6 +39,7 @@ export default function ScannerScreen({ route, navigation }) {
   return (
     <Provider>
       <View style={styles.container}>
+        <Text style={styles.header}>Scan a barcode</Text>
         <Surface style={styles.surface}>
           <Title style={styles.title}>Scan a product</Title>
           <BarCodeScanner
@@ -73,5 +74,17 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     textAlign: 'center',
     color: '#333', // Darker color for better visibility
+  },
+  header: {
+    fontSize: 20,
+    textAlign: 'center',
+    margin: 10,
+    fontWeight: 'bold',
+  },
+  footer: {
+    fontSize: 16,
+    textAlign: 'center',
+    color: '#333333',
+    marginBottom: 5,
   },
 });
