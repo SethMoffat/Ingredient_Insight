@@ -23,7 +23,10 @@ const OnboardingScreen = ({ navigation }) => {
           >
             <Menu.Item onPress={() => {setAllergies('None'); setVisibleAllergies(false);}} title="None" />
             <Menu.Item onPress={() => {setAllergies('Peanuts'); setVisibleAllergies(false);}} title="Peanuts" />
-            {/* Add more Menu.Item components for other allergies */}
+            <Menu.Item onPress={() => {setAllergies('Gluten'); setVisibleAllergies(false);}} title="Gluten" />
+            <Menu.Item onPress={() => {setAllergies('Shellfish'); setVisibleAllergies(false);}} title="Shellfish" />
+            <Menu.Item onPress={() => {setAllergies('Soybean'); setVisibleAllergies(false);}} title="Soybean" />
+            <Menu.Item onPress={() => {setAllergies('Egg'); setVisibleAllergies(false);}} title="Egg" />
           </Menu>
           <Button mode="contained" style={styles.button} onPress={handleContinue}>Continue</Button>
         </Surface>

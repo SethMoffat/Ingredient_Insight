@@ -10,6 +10,7 @@ const IngredientsScreen = ({ route, navigation }) => {
   const { ingredients, allergies } = route.params;
   const [healthConcerns, setHealthConcerns] = useState([]);
   const [allergyConcerns, setAllergyConcerns] = useState([]);
+
   const peanut_list = [
     "Peanuts",
     "Peanut Butter",
@@ -21,21 +22,122 @@ const IngredientsScreen = ({ route, navigation }) => {
     "Nougat",
     "Textured Vegetable Protein",
     "Carrageenan",
-    'water',
+  ];
+  const egg_list = [
+    "Egg",
+    "Whole egg",
+    "Egg whites",
+    "Egg yolks",
+    "Egg powder",
+    "Egg solids",
+    "Albumin",
+    "Mayonnaise",
+    "Marshmallows",
+    "Nougat",
+    "Pasta",
+    "Baked goods",
+    "Cake",
+    "Breading",
+  ];
+  const soybean_list = [
+    "Soybeans",
+    "Soy",
+    "Soy protein",
+    "Soy flour",
+    "Soy oil",
+    "Soy lecithin",
+    "Edamame",
+    "Miso",
+    "Natto",
+    "Soy sauce",
+    "Tamari",
+    "Soy milk",
+    "Tofu",
+    "Tempeh",
+    "Textured vegetable protein",
+    "TVP",
+    "Soybean oil",
+    "Hydrolyzed soy protein",
+    "Soy isolate",
+    "Soybean sprouts",
+    "Soybean oil",
+    "Soy-based additives",
+    "Vegetable protein",
+  ];
+  const wheat_list = [
+    "Wheat",
+    "Wheat flour",
+    "Whole wheat",
+    "Durum wheat",
+    "Semolina",
+    "Bulgur",
+    "Farina",
+    "Spelt",
+    "Kamut",
+    "Einkorn",
+    "Wheat germ",
+    "Wheat bran",
+    "Wheat starch",
+    "Wheat protein",
+    "Modified wheat starch",
+    "Hydrolyzed wheat protein",
+    "Vital wheat gluten",
+    "Wheat-based additives",
+    "Couscous",
+    "Bread",
+    "Pasta",
+    "Crackers",
+    "Beer ",
+    "Soy sauce",
+  ];
+  const shellfish_list = [
+    "Shellfish",
+    "Shrimp",
+    "Crab",
+    "Lobster",
+    "Crayfish",
+    "Clams",
+    "Mussels",
+    "Oysters",
+    "Scallops",
+    "Abalone",
+    "Squid",
+    "Octopus",
+    "Cuttlefish",
+    "Snails",
+    "Cockles",
+    "Periwinkles",
+    "Sea urchin",
+    "Sea cucumber",
+    "Barnacles",
+    "Surimi",
+    "Shellfish extract",
+    "Shellfish paste",
+    "Shellfish sauce",
   ];
 
   useEffect(() => {
     if (typeof ingredients !== 'string') return;
-
+  
     const ingredientsArray = ingredients.split(',').map(normalizeString);
+  
+    const allergyLists = {
+      'Peanuts': peanut_list,
+      'Shellfish': shellfish_list,
+      'Soybean': soybean_list,
+      'Gluten': wheat_list,
+      'Egg': egg_list,
+    }
 
-    const foundSeedOils = seedOils.map(normalizeString).filter((oil) => ingredientsArray.includes(oil));
-    const foundSweeteners = unhealthySweeteners.map(normalizeString).filter((sweetener) => ingredientsArray.includes(sweetener));
-    const foundPeanutAllergies = peanut_list.map(normalizeString).filter((allergy) => ingredientsArray.includes(allergy));
+    const selectedAllergyList = allergyLists[allergies];
 
-    setHealthConcerns([...foundSeedOils, ...foundSweeteners]);
-    setAllergyConcerns(foundPeanutAllergies);
-  }, [ingredients, allergies]);
+  const foundSeedOils = seedOils.map(normalizeString).filter((oil) => ingredientsArray.includes(oil));
+  const foundSweeteners = unhealthySweeteners.map(normalizeString).filter((sweetener) => ingredientsArray.includes(sweetener));
+  const foundAllergies = selectedAllergyList.map(normalizeString).filter((allergy) => ingredientsArray.includes(allergy));
+
+  setHealthConcerns([...foundSeedOils, ...foundSweeteners]);
+  setAllergyConcerns(foundAllergies);
+}, [ingredients, allergies]);
 
   return (
     <Provider>
