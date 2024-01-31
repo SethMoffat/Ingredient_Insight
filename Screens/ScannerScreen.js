@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
-import { Button, Provider, Title, Surface } from 'react-native-paper';
+import { Text, View, StyleSheet, Button as RNButton } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import axios from 'axios';
+import { Button, Menu, Provider, Title, Surface } from 'react-native-paper';
 
-export default function ScannerScreen({ navigation }) {
+export default function ScannerScreen({ route, navigation }) {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
+
+  const { allergies } = route.params; // Get allergies from route.params
 
   useEffect(() => {
     (async () => {
@@ -19,10 +21,11 @@ export default function ScannerScreen({ navigation }) {
     setScanned(true);
 
     const response = await axios.get(`https://world.openfoodfacts.org/api/v0/product/${data}.json`);
+
     if(response.data.status === 1) {
-      navigation.navigate('Ingredients', { ingredients: response.data.product.ingredients_text });
+      navigation.navigate('Ingredients', { ingredients: response.data.product.ingredients_text, allergies });
     } else {
-      navigation.navigate('Ingredients', { ingredients: 'Product not found' });
+      navigation.navigate('Ingredients', { ingredients: 'Product not found', allergies });
     }
   };
 

@@ -7,8 +7,22 @@ import { unhealthySweeteners, isUnhealthySweetener } from '../constants/unhealth
 const normalizeString = str => str.toLowerCase().replace(/[^a-z0-9]/g, ' ').replace(/\s+/g, ' ').trim();
 
 const IngredientsScreen = ({ route, navigation }) => {
-  const { ingredients } = route.params;
+  const { ingredients, allergies } = route.params;
   const [healthConcerns, setHealthConcerns] = useState([]);
+  const [allergyConcerns, setAllergyConcerns] = useState([]);
+  const peanut_list = [
+    "Peanuts",
+    "Peanut Butter",
+    "Peanut Oil",
+    "Peanut Flour",
+    "Hydrolyzed Vegetable Protein",
+    "Lecithin",
+    "peanut lecithin",
+    "Nougat",
+    "Textured Vegetable Protein",
+    "Carrageenan",
+    'water',
+  ];
 
   useEffect(() => {
     if (typeof ingredients !== 'string') return;
@@ -17,9 +31,11 @@ const IngredientsScreen = ({ route, navigation }) => {
 
     const foundSeedOils = seedOils.map(normalizeString).filter((oil) => ingredientsArray.includes(oil));
     const foundSweeteners = unhealthySweeteners.map(normalizeString).filter((sweetener) => ingredientsArray.includes(sweetener));
+    const foundPeanutAllergies = peanut_list.map(normalizeString).filter((allergy) => ingredientsArray.includes(allergy));
 
     setHealthConcerns([...foundSeedOils, ...foundSweeteners]);
-  }, [ingredients]);
+    setAllergyConcerns(foundPeanutAllergies);
+  }, [ingredients, allergies]);
 
   return (
     <Provider>
@@ -29,7 +45,7 @@ const IngredientsScreen = ({ route, navigation }) => {
           <ScrollView>
             <Paragraph style={styles.paragraph}>{ingredients}</Paragraph>
           </ScrollView>
-          <Title style={styles.title}>Health Concerns</Title>
+          <Title style={styles.title}>General Health Concerns</Title>
           <ScrollView>
             {healthConcerns.length > 0 ? (
               healthConcerns.map((concern, index) => (
@@ -39,6 +55,20 @@ const IngredientsScreen = ({ route, navigation }) => {
               <Paragraph style={styles.paragraph}>No Health Concerns Detected</Paragraph>
             )}
           </ScrollView>
+          {allergies !== 'None' && (
+            <>
+              <Title style={styles.title}>Allergies</Title>
+              <ScrollView>
+                {allergyConcerns.length > 0 ? (
+                  allergyConcerns.map((concern, index) => (
+                    <Paragraph key={index} style={styles.paragraph}>{concern}</Paragraph>
+                  ))
+                ) : (
+                  <Paragraph style={styles.paragraph}>No Allergies Detected</Paragraph>
+                )}
+              </ScrollView>
+            </>
+          )}
           <Button mode="contained" onPress={() => navigation.navigate('Scanner')}>Scan Again</Button>
         </Surface>
       </View>
