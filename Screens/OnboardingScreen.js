@@ -1,10 +1,22 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, Text, Animated } from 'react-native';
 import { Button, Menu, Provider, Title, Surface } from 'react-native-paper';
 
 const OnboardingScreen = ({ navigation }) => {
   const [allergies, setAllergies] = useState('');
   const [visibleAllergies, setVisibleAllergies] = useState(false);
+  const [fadeAnim] = useState(new Animated.Value(0))  // Initial value for opacity: 0
+
+  useEffect(() => {
+    Animated.timing(
+      fadeAnim,
+      {
+        toValue: 1,
+        duration: 2000,
+        useNativeDriver: false,
+      }
+    ).start();
+  }, [fadeAnim])
 
   const handleContinue = () => {
     navigation.navigate('Scanner', { allergies });
@@ -13,7 +25,7 @@ const OnboardingScreen = ({ navigation }) => {
   return (
     <Provider>
       <View style={styles.container}>
-        <Surface style={styles.surface}>
+        <Animated.View style={{...styles.surface, opacity: fadeAnim}}>
           <Title style={styles.title}>Let's get started!</Title>
           <Text style={styles.paragraph}>Select your allergies:</Text>
           <Menu
@@ -29,7 +41,7 @@ const OnboardingScreen = ({ navigation }) => {
             <Menu.Item onPress={() => {setAllergies('Egg'); setVisibleAllergies(false);}} title="Egg" />
           </Menu>
           <Button mode="contained" style={styles.button} onPress={handleContinue}>Continue</Button>
-        </Surface>
+        </Animated.View>
       </View>
     </Provider>
   );
@@ -52,14 +64,14 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 16,
-    textAlign: 'center', // Add this line
+    textAlign: 'center',
   },
   paragraph: {
     marginBottom: 8,
     fontSize: 18,
     fontWeight: 'bold',
     color: '#333',
-    textAlign: 'center', // Add this line
+    textAlign: 'center',
   },
   button: {
     marginTop: 16,
