@@ -7,7 +7,7 @@ import { unhealthySweeteners, isUnhealthySweetener } from '../constants/unhealth
 const normalizeString = str => str.toLowerCase().replace(/[^a-z0-9]/g, ' ').replace(/\s+/g, ' ').trim();
 
 const IngredientsScreen = ({ route, navigation }) => {
-  const { ingredients, allergies } = route.params;
+  const { ingredients, allergies } = route.params ? route.params : { ingredients: '', allergies: 'None' };
   const [healthConcerns, setHealthConcerns] = useState([]);
   const [allergyConcerns, setAllergyConcerns] = useState([]);
 
@@ -131,12 +131,15 @@ const IngredientsScreen = ({ route, navigation }) => {
 
     const selectedAllergyList = allergyLists[allergies];
 
-  const foundSeedOils = seedOils.map(normalizeString).filter((oil) => ingredientsArray.includes(oil));
-  const foundSweeteners = unhealthySweeteners.map(normalizeString).filter((sweetener) => ingredientsArray.includes(sweetener));
-  const foundAllergies = selectedAllergyList.map(normalizeString).filter((allergy) => ingredientsArray.includes(allergy));
+    const foundSeedOils = seedOils.map(normalizeString).filter((oil) => ingredientsArray.includes(oil));
+    const foundSweeteners = unhealthySweeteners.map(normalizeString).filter((sweetener) => ingredientsArray.includes(sweetener));
+    let foundAllergies = [];
+    if (selectedAllergyList) {
+      foundAllergies = selectedAllergyList.map(normalizeString).filter((allergy) => ingredientsArray.includes(allergy));
+    }
 
-  setHealthConcerns([...foundSeedOils, ...foundSweeteners]);
-  setAllergyConcerns(foundAllergies);
+    setHealthConcerns([...foundSeedOils, ...foundSweeteners]);
+    setAllergyConcerns(foundAllergies);
 }, [ingredients, allergies]);
 
   return (

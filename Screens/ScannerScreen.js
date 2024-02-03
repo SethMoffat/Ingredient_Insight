@@ -8,8 +8,7 @@ export default function ScannerScreen({ route, navigation }) {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
 
-  const { allergies } = route.params; // Get allergies from route.params
-
+  const allergies = route.params ? route.params.allergies : 'None'; // Get allergies from route.params or default to 'None'
   useEffect(() => {
     (async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
