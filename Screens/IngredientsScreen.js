@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
     padding: 32, // Increase padding
     elevation: 4,
     backgroundColor: 'white',
-    borderRadius: 8,
+    borderRadius: 28,
     margin: 16, // Add margin
   },
   title: {

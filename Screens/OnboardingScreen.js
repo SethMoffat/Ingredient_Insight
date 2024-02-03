@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     padding: 16,
     elevation: 4,
     backgroundColor: 'white',
-    borderRadius: 8,
+    borderRadius: 28,
   },
   title: {
     fontSize: 24,
